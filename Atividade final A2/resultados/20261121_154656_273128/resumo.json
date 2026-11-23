@@ -1,0 +1,10 @@
+{
+  "quadros_processados": 1,
+  "quadros_com_animais": 0,
+  "maximo_animais_em_um_quadro": 0,
+  "maximo_por_classe": {},
+  "limiar_confianca": 0.94,
+  "tempo_medio_processamento_ms": 130.39,
+  "observacao": "Contagens por quadro; não representam indivíduos únicos no vídeo.",
+  "status": "encerrado_pelo_usuario"
+}

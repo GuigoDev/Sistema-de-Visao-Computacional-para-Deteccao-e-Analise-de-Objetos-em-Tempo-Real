@@ -1,0 +1,12 @@
+{
+  "quadros_processados": 1,
+  "quadros_com_animais": 1,
+  "maximo_animais_em_um_quadro": 1,
+  "maximo_por_classe": {
+    "gato": 1
+  },
+  "limiar_confianca": 0.4,
+  "tempo_medio_processamento_ms": 2023.3,
+  "observacao": "Contagens por quadro; não representam indivíduos únicos no vídeo.",
+  "status": "encerrado_pelo_usuario"
+}

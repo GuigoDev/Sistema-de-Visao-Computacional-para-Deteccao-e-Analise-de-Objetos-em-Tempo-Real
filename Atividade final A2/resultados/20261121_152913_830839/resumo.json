@@ -1,0 +1,13 @@
+{
+  "quadros_processados": 153,
+  "quadros_com_animais": 147,
+  "maximo_animais_em_um_quadro": 2,
+  "maximo_por_classe": {
+    "gato": 2,
+    "urso": 1
+  },
+  "limiar_confianca": 0.4,
+  "tempo_medio_processamento_ms": 45.89,
+  "observacao": "Contagens por quadro; não representam indivíduos únicos no vídeo.",
+  "status": "fim_video_ou_interrupcao_leitura"
+}

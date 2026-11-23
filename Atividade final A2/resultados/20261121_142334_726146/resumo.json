@@ -1,0 +1,10 @@
+{
+  "quadros_processados": 3,
+  "quadros_com_animais": 0,
+  "maximo_animais_em_um_quadro": 0,
+  "maximo_por_classe": {},
+  "limiar_confianca": 0.4,
+  "tempo_medio_processamento_ms": 745.78,
+  "observacao": "Contagens por quadro; não representam indivíduos únicos no vídeo.",
+  "status": "fim_video_ou_interrupcao_leitura"
+}

@@ -1,0 +1,26 @@
+{
+  "quadros_processados": 153,
+  "quadros_com_animais": 147,
+  "maximo_animais_em_um_quadro": 2,
+  "maximo_por_classe": {
+    "gato": 2,
+    "urso": 1
+  },
+  "limiar_confianca": 0.4,
+  "tempo_medio_processamento_ms": 46.34,
+  "observacao": "Contagens por quadro; não representam indivíduos únicos no vídeo.",
+  "maior_confianca": {
+    "valor": 0.9268572926521301,
+    "quadro": 83,
+    "classe": "gato"
+  },
+  "maior_quantidade": {
+    "valor": 2,
+    "quadro": 19
+  },
+  "status": "fim_video_ou_interrupcao_leitura",
+  "capturas_video": [
+    "maior_confianca.jpg",
+    "maior_quantidade.jpg"
+  ]
+}
