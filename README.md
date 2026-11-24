@@ -1,156 +1,87 @@
-# Sistema de Visão Computacional para Detecção e Análise de Objetos em Tempo Real
+# Detector de animais — Atividade A2
 
-Aplicação desenvolvida em Python para detecção, classificação e contagem de animais em imagens, vídeos e webcam em tempo real. O projeto utiliza obrigatoriamente a biblioteca OpenCV para manipulação visual e o modelo pré-treinado YOLOv8n (Ultralytics) para inferência local em CPU, contando ainda com interface gráfica em Tkinter e exportação automatizada de métricas e evidências.
+Aplicação Python com **OpenCV obrigatório e YOLOv8n pré-treinado**, correspondente à opção 2 do enunciado. Usa imagem, vídeo ou webcam; desenha caixas com classe e confiança; apresenta contagem por classe e tempo de processamento. A inferência acontece no computador, em CPU.
 
-Desenvolvido por: Guilherme Romero, Jhenyffer Christynna e Lucas Oliveira.
+## O professor definiu o tipo de aplicativo?
 
----
+Definiu visão computacional em Python, mas permite escolher o problema. **Detecção de animais em imagens é uma das sugestões expressas** no A2-5.pdf. Portanto, este tema está dentro da lista; a exigência de aprovação citada no documento se refere a outros temas.
 
-## Sumário
+O grupo pode ter até 3 alunos. O enunciado informa prazo de 2 semanas, sem uma data de calendário: confirme a data de entrega informada em aula.
 
-1. [Visão Geral e Funcionalidades](#visão-geral-e-funcionalidades)
-2. [Tecnologias e Bibliotecas Utilizadas](#tecnologias-e-bibliotecas-utilizadas)
-3. [Estrutura do Repositório](#estrutura-do-repositório)
-4. [Passo a Passo de Instalação](#passo-a-passo-de-instalação)
-5. [Como Executar e Usar a Interface](#como-executar-e-usar-a-interface)
-6. [Interpretação dos Resultados Exportados](#interpretação-dos-resultados-exportados)
-7. [Testes Automatizados](#testes-automatizados)
-8. [Limitações e Premissas Técnicas](#limitações-e-premissas-técnicas)
+## Instalação no Windows
 
----
+Abra o terminal nesta pasta. Use Python 64 bits (3.11, 3.12 ou 3.13).
 
-## Visão Geral e Funcionalidades
-
-- **Múltiplas fontes de entrada:** suporte a arquivos de imagem (`JPG`, `JPEG`, `PNG`, `BMP`, `WEBP`), arquivos de vídeo (`MP4`, `AVI`, `MOV`, `MKV`) e captura ao vivo via webcam.
-- **Filtragem de 10 classes de animais (dataset COCO):** pássaro (`bird`), gato (`cat`), cachorro (`dog`), cavalo (`horse`), ovelha (`sheep`), vaca (`cow`), elefante (`elephant`), urso (`bear`), zebra (`zebra`) e girafa (`giraffe`).
-- **Interface gráfica e modo CLI:** tela inicial desenvolvida em Tkinter para seleção de mídia e ajuste dinâmico do limiar de confiança, além de suporte completo à execução via linha de comando.
-- **Painel de telemetria não obstrutivo:** exibição de contagem total, contagem por classe e tempo de processamento (em milissegundos) em uma faixa superior externa, evitando sobreposição sobre os objetos detectados.
-- **Destaques automáticos em vídeo:** ao finalizar a leitura de um vídeo, o sistema salva e exibe os quadros de maior confiança e de maior quantidade simultânea de animais.
-- **Auditoria e exportação:** geração automática de arquivos `deteccoes.csv`, `resumo.json` e capturas anotadas em pastas organizadas por data e hora.
-
----
-
-## Tecnologias e Bibliotecas Utilizadas
-
-- **Python (3.11, 3.12 ou 3.13 - 64 bits):** linguagem base da aplicação.
-- **OpenCV (`opencv-python>=4.10,<5`):** responsável pela leitura de imagens, decodificação de vídeos, acesso à webcam, redimensionamento proporcional dos quadros, desenho das caixas delimitadoras (*bounding boxes*), renderização do painel superior e gerenciamento das janelas de exibição.
-- **Ultralytics (`ultralytics>=8.3,<9`):** fornece a arquitetura YOLOv8n (*You Only Look Once* versão 8 nano) pré-treinada no conjunto de dados COCO, executando a inferência de detecção de objetos localmente em CPU.
-- **NumPy (`numpy>=1.26,<3`):** utilizada na manipulação matricial dos quadros e na leitura segura de arquivos de imagem em caminhos que contenham caracteres especiais ou acentuação no Windows.
-- **Tkinter (biblioteca padrão do Python):** utilizada no módulo `interface.py` para construir a tela inicial gráfica de configuração e seleção de arquivos.
-- **Módulos nativos (`argparse`, `csv`, `json`, `collections`, `pathlib`, `unittest`):** empregados no tratamento de argumentos de terminal, geração de relatórios tabulares e estruturados, contagem por classe e execução de testes unitários.
-
----
-
-## Estrutura do Repositório
-
-```text
-Sistema-de-Visao-Computacional-para-Deteccao-e-Analise-de-Objetos-em-Tempo-Real/
-├── README.md
-└── Atividade final A2/
-    ├── app.py               # Núcleo da aplicação: leitura, inferência YOLO, desenho e exportação
-    ├── interface.py         # Tela inicial gráfica em Tkinter
-    ├── iniciar.bat          # Atalho de execução rápida no Windows após a instalação
-    ├── requirements.txt     # Lista de dependências com versões compatíveis
-    ├── test_revisao.py      # Suíte de testes unitários e de regressão
-    ├── yolov8n.pt           # Pesos pré-treinados do modelo YOLOv8n
-    ├── exemplos/
-    │   ├── cachorro.jpg     # Imagem de exemplo para validação funcional
-    │   └── ORIGEM.md        # Referência de origem da imagem de exemplo
-    └── resultados/          # Diretório onde são salvas as pastas de cada execução
-```
----
-
-## Passo a Passo de Instalação
-### 1. Clonar o repositório
- ``` Abra o terminal (PowerShell, Prompt de Comando ou Git Bash) e execute:
-
-git clone [https://github.com/GuigoDev/Sistema-de-Visao-Computacional-para-Deteccao-e-Analise-de-Objetos-em-Tempo-Real.git](https://github.com/GuigoDev/Sistema-de-Visao-Computacional-para-Deteccao-e-Analise-de-Objetos-em-Tempo-Real.git)
-Acesse a pasta principal do código:
-
-cd "Sistema-de-Visao-Computacional-para-Deteccao-e-Analise-de-Objetos-em-Tempo-Real/Atividade final A2"
-```
-
-``` 2. Criar e ativar o ambiente virtual (Windows PowerShell)
-Recomenda-se isolar as dependências em um ambiente virtual .venv:
-
+```powershell
 python -m venv .venv
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
-.\.venv\Scripts\Activate.ps1
-Caso prefira não ativar o ambiente no terminal, basta invocar diretamente o executável .\.venv\Scripts\python.exe nos comandos seguintes.
-```
-``` 3. Instalar as dependências
-Com o ambiente virtual ativo, atualize o pip e instale as bibliotecas listadas em requirements.txt:
-
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
-Observação: o pacote ultralytics instala o PyTorch como dependência, portanto o download inicial pode levar alguns minutos. Caso o arquivo yolov8n.pt não esteja presente localmente, ele será baixado automaticamente na primeira execução (requer conexão com a internet).
-
-Como Executar e Usar a Interface
-Opção A: Usando a Interface Gráfica (Recomendado)
-No terminal (dentro da pasta Atividade final A2), execute:
-
-python app.py
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe app.py
 ```
 
-### Alternativamente, no Windows Explorer, dê um duplo clique no arquivo iniciar.bat.
+Não é necessário ativar o ambiente. A instalação inclui PyTorch e pode demorar. A primeira execução baixa `yolov8n.pt` e precisa de internet. Depois, com dependências e pesos presentes, a detecção funciona localmente. Não precisa de chave de API nem de treinamento próprio.
 
-Na janela Detector de animais - A2:
+Na tela inicial, escolha imagem, webcam ou vídeo usando os botões. Você pode ajustar a confiança mínima e o índice da câmera. Após instalar, dê dois cliques em `iniciar.bat` para abrir essa tela. Para usar o menu textual, execute `app.py --terminal`. Também é possível executar diretamente:
 
-Confiança mínima (%): defina o percentual mínimo de certeza exigido para exibir uma detecção (padrão: 40%). Valores mais altos reduzem falsos positivos; valores mais baixos aumentam a sensibilidade.
-
-Abrir imagem: abre o seletor de arquivos para escolher uma foto e exibir o resultado anotado.
-
-Abrir vídeo: abre o seletor de arquivos para processar um vídeo quadro a quadro.
-
-Iniciar webcam: inicia a captura em tempo real utilizando o índice de câmera informado ao lado (padrão: 0 para a webcam principal).
-
-Atalhos de teclado durante a detecção:
-
-S: salva manualmente o quadro atual na pasta da execução.
-
-Q ou ESC: encerra a visualização atual e retorna à tela inicial.
-
-1 e 2 (na tela de encerramento de vídeo): alterna entre o quadro de Maior Confiança (1) e o quadro de Maior Quantidade (2).
-
-Para fechar completamente o programa, feche a janela inicial do Tkinter.
-
-Opção B: Execução Direta via Terminal (CLI)
-Você pode iniciar o processamento diretamente por linha de comando sem passar pela tela gráfica:
-
----
-
-```PowerShell
-# Processar uma imagem específica
-python app.py --imagem "exemplos/cachorro.jpg"
-
-# Processar uma imagem definindo limiar de confiança de 60%
-python app.py --imagem "exemplos/cachorro.jpg" --confianca 0.60
-
-# Processar um arquivo de vídeo
-python app.py --video "caminho/para/video.mp4"
-
-# Iniciar detecção pela webcam principal
-python app.py --webcam 0
-
-# Usar menu interativo em modo texto
-python app.py --terminal
-
-# Processar imagem ou vídeo em lote sem abrir janela gráfica
-python app.py --imagem "exemplos/cachorro.jpg" --sem-janela
-Interpretação dos Resultados Exportados
-Cada execução cria automaticamente um subdiretório identificado por data e hora em resultados/AAAAMMDD_HHMMSS_ffffff/ contendo:
+```powershell
+.\.venv\Scripts\python.exe app.py --imagem "C:\imagens\gato.jpg"
+.\.venv\Scripts\python.exe app.py --webcam 0
+.\.venv\Scripts\python.exe app.py --video "C:\videos\animais.mp4"
+.\.venv\Scripts\python.exe app.py --imagem "C:\imagens\gato.jpg" --confianca 0.60
 ```
-### deteccoes.csv: arquivo separado por ponto e vírgula (;) com as colunas quadro, classe, confianca, x1, y1, x2, y2 e processamento_ms. Quadros sem animais recebem a marcação nenhum. As coordenadas referem-se ao quadro redimensionado (limite de 960 x 720 pixels), desconsiderando a faixa superior de telemetria.
 
-### resumo.json: arquivo estruturado contendo quadros_processados, quadros_com_animais, maximo_animais_em_um_quadro, maximo_por_classe, limiar_confianca, tempo_medio_processamento_ms, status da execução e os destaques capturados.
+Na janela de detecção, **Q ou ESC** volta à tela inicial; **S** salva o quadro. Para encerrar o programa, feche a tela inicial (ou escolha 0 no menu textual). Imagens são salvas automaticamente. O CSV é salvo em todas as modalidades, dentro de `resultados/<execucao>/`. Para processar imagem/vídeo sem abrir janela e encerrar ao terminar, acrescente `--sem-janela`.
 
-### resultado.jpg: imagem final anotada (gerada em execuções de imagem ou em vídeos sem detecções).
+Ao concluir a leitura de um vídeo, o programa salva os quadros de maior confiança e maior quantidade em `maior_confianca.jpg` e `maior_quantidade.jpg`. Na tela final, use **1** e **2** para alternar entre eles. Se nenhum animal for detectado, salva o último quadro como `resultado.jpg`. Os destaques automáticos são gerados ao chegar ao fim da leitura; sair antes com Q/ESC não gera essa tela final.
 
-### maior_confianca.jpg e maior_quantidade.jpg: capturas salvas automaticamente ao término da leitura completa de um vídeo.
+## Animais e interpretação dos resultados
 
-# Testes Automatizados
-O projeto possui testes unitários em test_revisao.py que validam o redimensionamento proporcional, rejeição de parâmetros inválidos, exportação em caminhos com acentuação, fluxo de retorno ao menu e seleção de quadros de destaque em vídeo. Para executá-los:
+As classes disponíveis são: pássaro, gato, cachorro, cavalo, ovelha, vaca, elefante, urso, zebra e girafa. O modelo não reconhece todos os animais nem identifica raças. Nomes no desenho usam letras sem acentos por compatibilidade com a fonte do OpenCV.
 
-```PowerShell
-python -m unittest -v test_revisao.py
-```
+Confiança é a pontuação do modelo para aquela detecção, **não a acurácia medida do aplicativo**. Pode haver falsos positivos e animais não detectados. A contagem é por quadro, não de indivíduos únicos ao longo do vídeo. Somar as linhas do CSV não fornece o número de animais distintos.
+
+O CSV registra classe, confiança entre 0 e 1, caixa e tempo de processamento. Coordenadas referem-se ao quadro redimensionado, antes da faixa superior adicionada à visualização. Essa faixa aumenta conforme o número de classes exibidas. Quadros vazios recebem uma linha `nenhum`. Vídeos são processados na velocidade possível da CPU, sem sincronização com o áudio ou a taxa original; não há gravação de vídeo de saída.
+
+Cada execução também gera `resumo.json`: quadros processados, quadros com animais, máximo simultâneo total e por classe, limiar e tempo médio de processamento. Os máximos por classe podem ocorrer em quadros diferentes. O tempo inclui inferência e desenho das caixas, mas não captura, exportação ou espera da janela. A primeira inferência pode ser mais lenta. O resumo registra encerramento manual, erro ou fim da leitura; OpenCV não distingue de forma confiável o fim normal de um vídeo de uma falha de decodificação após quadros válidos.
+
+## Organização e explicação do código
+
+- `argumentos` e `escolher_fonte`: configuram a entrada e o limiar de confiança.
+- `interface.py`: tela inicial com Tkinter (incluído na instalação padrão do Python para Windows).
+- `preparar_quadro`: limita a imagem a 960 × 720 preservando a proporção.
+- `detectar`: executa YOLO, filtra animais, desenha caixas e calcula métricas.
+- `executar`: lê imagens ou quadros com OpenCV, exibe resultados, escreve CSV e libera a câmera.
+- `roteiro_video.md`: sequência para gravar a demonstração.
+- `test_revisao.py`: testes automatizados das correções e exportação; execute `.\.venv\Scripts\python.exe -m unittest -v test_revisao.py`.
+
+## Verificação antes de entregar
+
+1. Execute uma foto de gato e uma de cachorro; confira caixas, nomes e confiança.
+2. Execute uma foto com mais de um animal e compare a contagem manual.
+3. Execute uma foto sem animais e registre eventuais falsos positivos.
+4. Teste um vídeo com animais; a webcam é uma alternativa opcional para quem possui câmera. O enunciado aceita imagem, vídeo ou webcam.
+5. Experimente limiares 0.25, 0.40 e 0.70 na mesma imagem.
+6. Abra os JPGs e CSVs produzidos e use evidências reais no relatório.
+
+Se a câmera não abrir, feche programas que a utilizam, confira a permissão do Windows e tente `--webcam 1`. Se o download falhar, confira a internet e execute novamente. Se não detectar, confira iluminação, tamanho do animal e limiar. Para reduzir lentidão, feche outros programas.
+
+## Entrega exigida pelo PDF
+
+- Código organizado e comentado, README e requirements.txt.
+- Relatório de **2 a 4 páginas**, com introdução, objetivos, tecnologias, metodologia, resultados, dificuldades e conclusões.
+- Vídeo de **3 a 5 minutos**, com funcionamento, resultados e explicação do código principal.
+
+O relatório final é mantido separadamente da pasta do código e deve acompanhar a entrega, com 2 a 4 páginas e todas as seções exigidas. O vídeo precisa ser gravado pelo grupo.
+
+Para enviar o código, mantenha `app.py`, `interface.py`, `README.md` e `requirements.txt`. Inclua também `iniciar.bat` para facilitar a abertura após a instalação. `test_revisao.py`, `exemplos/` (com a origem da imagem) e evidências selecionadas de `resultados/` são complementos opcionais. `roteiro_video.md` é material de apoio à gravação, não um entregável obrigatório.
+
+Não inclua `.venv`, `.tools` ou `__pycache__` no envio; são pastas locais de dependências e arquivos gerados. Não é necessário enviar todo o histórico de `resultados/` nem o vídeo sintético `resultados/teste_video.avi`. O arquivo `yolov8n.pt` contém os pesos do modelo, não é documento extra: mantenha-o localmente. No pacote de entrega, ele é opcional se houver internet para o download automático; para distribuí-lo, observe as condições da Ultralytics.
+
+**Observação sobre a nota:** o enunciado anuncia 1,50 ponto, mas os valores individuais da tabela somam 1,30. Confirme essa diferença com o professor.
+
+## Referências
+
+- https://docs.ultralytics.com/modes/predict/
+- https://docs.ultralytics.com/datasets/detect/coco/
+- https://docs.opencv.org/4.x/
+
+Versões exatas usadas em uma execução podem ser registradas com `python -m pip freeze` no ambiente virtual.
